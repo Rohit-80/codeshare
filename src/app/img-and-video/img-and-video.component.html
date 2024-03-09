@@ -12,8 +12,15 @@
           <mat-radio-button value="excel">excel</mat-radio-button>
         </mat-radio-group>
 
-        <button *ngIf="isLogged" mat-stroked-button type="submit" id="upload_widget" (click)="openWidget()"
-          class="cloudinary-button" [disabled]="!imgForm.valid">
+        <button
+          *ngIf="isLogged"
+          mat-stroked-button
+          type="submit"
+          id="upload_widget"
+          (click)="openWidget()"
+          class="cloudinary-button"
+          [disabled]="!imgForm.valid"
+        >
           Upload files
         </button>
       </form>
@@ -21,17 +28,25 @@
 
     <div class="image-div">
       <div class="image-container">
-
         <div *ngFor="let item of imgArray" class="img-mediate">
-
           <mat-card class="img-card">
             <mat-card-header>
-              <mat-card-title   [matTooltip]="item[1].filename || ''" >{{item[1].filename.length > 10 ? item[1].filename.slice(0,15) : item[1].filename }}</mat-card-title>
-              <mat-card-subtitle>{{item[1].time}}</mat-card-subtitle>
-
+              <mat-card-title [matTooltip]="item[1].filename || ''">{{
+                item[1].filename.length > 10
+                  ? item[1].filename.slice(0, 15)
+                  : item[1].filename
+              }}</mat-card-title>
+              <mat-card-subtitle style="color: white">{{
+                item[1].time
+              }}</mat-card-subtitle>
             </mat-card-header>
             <div class="img-img">
-              <img style="width: 100%; height: 100%;" mat-card-image [src]="item[1].url" alt="Photo of a Shiba Inu">
+              <img
+                style="width: 100%; height: 100%"
+                mat-card-image
+                [src]="item[1].url"
+                alt="Photo of a Shiba Inu"
+              />
             </div>
 
             <!-- <mat-card-content>
@@ -41,13 +56,25 @@
                 bred for hunting.
               </p>
             </mat-card-content> -->
-            <mat-card-actions *ngIf="isLogged" >
-              <a style="width: 100%; height : 100%" target="_blank" [href]="item[1].url">
-              <button mat-button color="accent" (click)="downloadImage(item[1].url)">Download</button> </a>
-              <button mat-button color="warn" (click)="deleteImage(item[0])" >Delete</button>
+            <mat-card-actions *ngIf="isLogged">
+              <a
+                style="width: 100%; height: 100%"
+                target="_blank"
+                [href]="item[1].url"
+              >
+                <button
+                  mat-button
+                  color="accent"
+                  (click)="downloadImage(item[1].url)"
+                >
+                  Download
+                </button>
+              </a>
+              <button mat-button color="warn" (click)="deleteImage(item[0])">
+                Delete
+              </button>
             </mat-card-actions>
           </mat-card>
-
 
           <!-- <p style="text-decoration: dashed; text-transform: capitalize;">{{item[1].filename}} </p>
 
@@ -62,14 +89,16 @@
               delete
             </button>
           </div> -->
-
-
         </div>
-
       </div>
 
       <aside>
-        <app-ag-grid [rowDatas]="rowDataImg" [colDefs]="columnDefImg" (out)="call($event)" (pageEvent)="pageImgEvent($event)">
+        <app-ag-grid
+          [rowDatas]="rowDataImg"
+          [colDefs]="columnDefImg"
+          (out)="call($event)"
+          (pageEvent)="pageImgEvent($event)"
+        >
         </app-ag-grid>
         <!-- <mat-selection-list #shoes [multiple]="false"  >
         <mat-list-option *ngFor="let shoe of ['first','second']">
@@ -80,17 +109,26 @@
     </div>
 
     <div class="image-div">
-      <div class="image-container">
-
-        <div *ngFor="let item of videoArray" class="img-mediate">
+      <div class="image-container"  >
+        <div *ngFor="let item of videoArray" class="img-mediate" style=" padding: 0.7rem;" >
           <mat-card class="img-card">
             <mat-card-header>
-              <mat-card-title   [matTooltip]="item[1].filename || ''" >{{item[1].filename.length > 10 ? item[1].filename.slice(0,15) : item[1].filename }}</mat-card-title>
-              <mat-card-subtitle>{{item[1].time}}</mat-card-subtitle>
-
+              <mat-card-title [matTooltip]="item[1].filename || ''">{{
+                item[1].filename.length > 10
+                  ? item[1].filename.slice(0, 15)
+                  : item[1].filename
+              }}</mat-card-title>
+              <mat-card-subtitle style="color: white">{{
+                item[1].time
+              }}</mat-card-subtitle>
             </mat-card-header>
             <div class="img-img">
-              <video style="width: 100%; height: 100%;" mat-card-image [src]="item[1].url" alt="Photo of a Shiba Inu"> </video>
+              <video
+                style="width: 100%; height: 100%"
+                mat-card-image
+                [src]="item[1].url"
+                alt="Photo of a Shiba Inu"
+              ></video>
             </div>
 
             <!-- <mat-card-content>
@@ -100,33 +138,29 @@
                 bred for hunting.
               </p>
             </mat-card-content> -->
-            <mat-card-actions *ngIf="isLogged" >
-              <a style="width: 100%; height : 100%" target="_blank" [href]="item[1].url">
-              <button mat-button color="accent">Download</button> </a>
-              <button mat-button color="warn" (click)="deleteVideo(item[0])"  >Delete</button>
+            <mat-card-actions *ngIf="isLogged">
+              <a
+                style="width: 100%; height: 100%"
+                target="_blank"
+                [href]="item[1].url"
+              >
+                <button mat-button color="accent">Download</button>
+              </a>
+              <button mat-button color="warn" (click)="deleteVideo(item[0])">
+                Delete
+              </button>
             </mat-card-actions>
           </mat-card>
-
-
-          <!-- <p style="text-decoration: dashed; text-transform: capitalize;">{{item[1].filename}} </p>
-          <video [src]="item[1].url" style="width: 100%; height: 100%"></video>
-          <div *ngIf="isLogged" class="button-div">
-
-
-            <a style="width: 100%; height : 100%" [href]="item[1].url">
-              <button mat-flat-button color="accent" class="second"> download </button>
-            </a>
-
-            <button mat-flat-button color="warn" class="second" (click)="deleteVideo(item[0])">
-              delete
-            </button>
-
-          </div> -->
         </div>
       </div>
 
       <aside>
-        <app-ag-grid [rowDatas]="rowDataVideo" [colDefs]="columnDefVideo" (out)="call($event) " (pageEvent)="pageVideoEvent($event)">
+        <app-ag-grid
+          [rowDatas]="rowDataVideo"
+          [colDefs]="columnDefVideo"
+          (out)="call($event)"
+          (pageEvent)="pageVideoEvent($event)"
+        >
         </app-ag-grid>
         <!-- <mat-selection-list #shoes [multiple]="false"  >
           <mat-list-option *ngFor="let shoe of ['first','second']">

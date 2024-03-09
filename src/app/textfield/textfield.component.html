@@ -47,9 +47,9 @@
       
       <h2 *ngIf="item[1].header">{{ item[1].header }}</h2>
       <h4>{{ item[1].time }}</h4>
-      <p class="content-txt">
-        {{ item[1].txt }}
-      </p>
+      <pre class="content-txt">
+         {{ item[1].txt }} 
+      </pre>
       <div *ngIf="isLogged" style="margin-bottom: 0.3rem">
         <button
           mat-stroked-button

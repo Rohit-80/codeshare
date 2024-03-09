@@ -168,14 +168,14 @@ export class DocfileComponent implements OnInit {
       );
 
       let arr: any[] = [];
-      this.docArray.forEach((element: { filename: string; id: string }[]) => {
-        arr.push({ docName: element[1].filename, id: element[0] });
+      this.docArray.forEach((element: { filename: string; id: string, time : string }[]) => {
+        arr.push({ docName: element[1].filename, id: element[0] , time : element[1].time});
       });
       arr.reverse();
       this.rowDataDoc = arr;
       arr = [];
-      this.excelArray.forEach((element: { filename: string; id: string }[]) => {
-        arr.push({ excelName: element[1].filename, id: element[0] });
+      this.excelArray.forEach((element: { filename: string; id: string , time : string}[]) => {
+        arr.push({ excelName: element[1].filename, id: element[0] , time : element[1].time});
       });
       arr.reverse();
       this.rowDataExcel = arr;

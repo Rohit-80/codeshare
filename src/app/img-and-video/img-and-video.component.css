@@ -4,7 +4,7 @@
 
 .image-div{
     width : 100%;
-    height : auto;
+    height : 80vh;
     display: flex;
     padding: 0.5rem;
 
@@ -31,7 +31,7 @@
     width: 80%;
     
     flex-direction: row;
-    height: 50vh;
+    height: 100%;
     overflow-y: scroll;
     scrollbar-color:    #707070 #1C2128;
     background-color: #1C2128;}
@@ -97,8 +97,8 @@ aside{
   height: 300px;
    */
   width: auto;
-  height: auto;
-  object-fit: fill;
+  height: 20rem;
+  padding: 1rem;
   background-color: #2D333B;
   /* background-color: red; */
   color: white;

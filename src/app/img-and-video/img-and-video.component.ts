@@ -60,7 +60,7 @@ export class ImgAndVideoComponent implements OnInit {
       cellRenderer: (params: any) => {
         let eIconGui = document.createElement('span');
         return (eIconGui.innerHTML =
-          params.data.imgName +
+          params.data.videoName +
           ' ' +
           '<br>' +
           '<em class="material-icons" style="border : 1px solid #707070;">insert_invitation</em>' +
@@ -137,8 +137,8 @@ export class ImgAndVideoComponent implements OnInit {
       arr.reverse();
       this.rowDataImg = arr;
       arr = [];
-      this.videoArray.forEach((element: { filename: string; id: string }[]) => {
-        arr.push({ videoName: element[1].filename, id: element[0] });
+      this.videoArray.forEach((element: { filename: string; id: string , time:string}[]) => {
+        arr.push({ videoName: element[1].filename, id: element[0],time : element[1].time });
       });
       arr.reverse();
       this.rowDataVideo = arr;

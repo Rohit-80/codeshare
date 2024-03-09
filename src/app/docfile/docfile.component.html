@@ -1,0 +1,59 @@
+
+<h1> Document Files </h1>
+<h3 style="padding-left: 1rem;"> {{fileName}}</h3>
+
+<div class="docfile-section">
+  <div  class="office-viewer">
+ 
+    <ngx-doc-viewer
+      [url]="urlDoc"
+      viewer="google"
+      style="width: 100%; height: 96%"
+    ></ngx-doc-viewer>
+   
+ 
+  <div *ngIf="isLogged" class="button-div">
+    <a style="width: 100%; height : 100%" target="_blank" [href]="urlDoc"  > 
+      <button mat-flat-button color="accent" class="second" (click)="downloadDoc(urlDoc)">  download </button>
+   </a>
+ 
+ <button mat-flat-button color="warn" class="second" (click)="deleteDoc(docId)">
+   delete
+ </button>
+  </div>
+  </div>
+
+  <aside>
+    <div class="actions">
+      <button mat-flat-button  color="basic"  (click)="selectDocumentType('doc')">
+        Doc
+      </button>
+      <button   mat-flat-button color="basic"  (click)="selectDocumentType('xl')">
+        Excel
+      </button>
+      <button   mat-flat-button color="basic" (click)="selectDocumentType('ppt')">PPT</button>
+    </div>
+    
+    <app-ag-grid
+      *ngIf="docType == 'doc'"
+      [rowDatas]="rowDataDoc"
+      [colDefs]="columnDefDoc"
+      (out)="call($event, 'doc')"
+    >
+    </app-ag-grid>
+    <app-ag-grid
+      *ngIf="docType == 'xl'"
+      [rowDatas]="rowDataExcel"
+      [colDefs]="columnDefExcel"
+      (out)="call($event, 'excel')"
+    >
+    </app-ag-grid>
+    <app-ag-grid
+      *ngIf="docType == 'ppt'"
+      [rowDatas]="rowDataPpt"
+      [colDefs]="columnDefPpt"
+      (out)="call($event, 'ppt')"
+    >
+    </app-ag-grid>
+  </aside>
+</div>

@@ -1,0 +1,56 @@
+<h1> Pdf Files </h1>
+<h2>{{PdfName}}</h2>
+<div class="outerContainer">
+    <div class="pdf-container">
+       
+            <nav *ngIf="isLoaded">
+              <button (click)="prevPage()" [disabled]="page === 1" class="previous">
+                Prev
+              </button>
+              <button (click)="nextPage()" [disabled]="page === totalPages" class="next">
+                Next
+              </button>
+              <p>{{ page }} / {{ totalPages }}</p>
+            </nav>
+          
+            <pdf-viewer
+              [src]="src"
+             
+              [render-text]="true"
+              [rotation]="0"
+              [show-all]="false"
+              [fit-to-page]="true"
+              [zoom]="1"
+              [zoom-scale]="'page-width'"
+              [stick-to-page]="true"
+              [external-link-target]="'blank'"
+              [autoresize]="true"
+              [show-borders]="false"
+              class="pdf-viewer"
+              [page]="page"
+              (after-load-complete)="afterLoadComplete($event)"
+              class="pdf-viewer"
+              style="width: 100%; height: 90%;"
+            ></pdf-viewer>
+
+            <div *ngIf="isLogged" class="button-div">
+              <a style="width: 100%; height : 100%" target="_blank" [href]="src"  > 
+                <button mat-flat-button color="accent" class="second" (click)="downloadPdf(src)">  download </button>
+             </a>
+           
+           <button mat-flat-button color="warn" class="second" (click)="deletePdf(pdfId)">
+             delete
+           </button>
+            </div>
+
+         
+          
+    </div>
+
+    <aside >
+        <p class="header"> Pdf List </p>
+        <app-ag-grid [rowDatas]="rowDataPdf" [colDefs]="columnDefPdf" (out)="call($event)"> </app-ag-grid>
+
+    </aside>
+
+  </div>

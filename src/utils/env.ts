@@ -1,0 +1,1 @@
+export const baseUrl = 'https://codeshare-4f844-default-rtdb.firebaseio.com/';

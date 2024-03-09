@@ -1,0 +1,96 @@
+<div>
+  <mat-form-field [style.fontSize]="'18px'" appearance="fill" class="formfield">
+    <mat-label style="color: #a7b2be"> Header</mat-label>
+    <textarea
+      matInput
+      #textheader
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="1"
+      style="background-color: #2d333b"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field [style.fontSize]="'18px'" appearance="fill" class="formfield">
+    <mat-label style="color: #a7b2be">Textarea</mat-label>
+    <textarea
+      matInput
+      #textfield
+      cdkTextareaAutosize
+      #autosize="cdkTextareaAutosize"
+      cdkAutosizeMinRows="4"
+      style="
+        background-color: #2d333b;
+        border-bottom: 2px solid rgb(70, 70, 70, 0.2);
+      "
+      cdkAutosizeMaxRows="100"
+    ></textarea>
+  </mat-form-field>
+  <button
+    *ngIf="isLogged"
+    mat-stroked-button
+    color="primary"
+    class="border"
+    (click)="doneText()"
+  >
+    done
+  </button>
+</div>
+
+<div class="main-section">
+  <div class="field-show">
+    <div
+      *ngFor="let item of txtData; index as i"
+      [id]="item[0]"
+      class="txt-area"
+    >
+      
+      <h2 *ngIf="item[1].header">{{ item[1].header }}</h2>
+      <h4>{{ item[1].time }}</h4>
+      <p class="content-txt">
+        {{ item[1].txt }}
+      </p>
+      <div *ngIf="isLogged" style="margin-bottom: 0.3rem">
+        <button
+          mat-stroked-button
+          color="primary"
+          class="border"
+          (click)="openDialog(item)"
+        >
+          Update
+        </button>
+        <button
+          mat-stroked-button
+          color="warn"
+          class="border"
+          (click)="deleteTxt(item[0])"
+        >
+          Delete
+        </button>
+      </div>
+
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+
+  <aside>
+
+
+    <!-- <app-ag-grid [rowDatas]="rowData" [colDefs]="columnDefss" (out)="call($event)"> </app-ag-grid> -->
+
+    <ag-grid-angular
+      class="ag-theme-quartz-dark"
+      style="width: 100%; height: 100%; "
+      [rowData]="rowData"
+      [columnDefs]="columnDef"
+      
+      [pagination]="true"
+      (paginationChanged)="paginationChanged($event)"
+      [paginationPageSize]="8"
+      rowSelection="single"
+      (selectionChanged)="row($event)"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </aside>
+</div>

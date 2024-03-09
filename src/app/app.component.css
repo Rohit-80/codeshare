@@ -1,0 +1,21 @@
+
+.main-section{
+    width: 100%;
+    height: auto;
+    /* background : url('../assets/vecteezy_abstract-gradient-pastel-blue-and-purple-background-neon_8617161-1.jpg'); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #1C2128;
+    color: #A7B2BE;
+}
+
+.center-section{
+     width: 70%;
+     height: auto;
+     margin: 1rem auto;
+     background-color: #22272E;
+     border:  5px solid #383C45;
+}
+
+
+

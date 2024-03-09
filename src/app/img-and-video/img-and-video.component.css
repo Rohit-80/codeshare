@@ -1,0 +1,118 @@
+.main-div{
+   padding: 0.3rem;
+}
+
+.image-div{
+    width : 100%;
+    height : auto;
+    display: flex;
+    padding: 0.5rem;
+
+}
+.img-mediate{
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  height: 15rem;
+}
+.second{
+
+
+
+
+  width: 100%;
+
+
+
+}
+.image-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    
+    flex-direction: row;
+    height: 50vh;
+    overflow-y: scroll;
+    scrollbar-color:    #707070 #1C2128;
+    background-color: #1C2128;}
+.images{
+  padding : 0.3rem;
+
+}
+
+h1{
+    display: flex;
+    justify-content: space-between;
+}
+aside{
+    /* background-color:; */
+    border: 1px solid #707070;
+    width: 20%;
+    height: auto;
+    margin-left: 0.5rem;
+    width: 24%;
+  }
+  p{
+    text-align: center;
+  }
+  mat-selection-list{
+    margin: 0.2rem;
+  }
+
+  mat-radio-button{
+    margin: 0.5rem;
+  }
+
+  form{
+    font-size: 1rem;
+  }
+
+  form mat-radio-button{
+    text-transform: uppercase;
+  }
+
+  button{
+    margin: 0 auto;
+
+    text-align:  center;
+    border: 1px solid rgb(255, 255, 255,0.1);
+    /* color: white; */
+}
+
+.button-div{
+  width: 100%;
+  height: auto;
+  display: flex;
+   /* background-color: yellow; */
+}
+.button-div button{
+  margin: 0.1rem;
+  width: 100%;
+  height: auto;
+}
+
+.img-card {
+  /* max-width: 500px;
+  min-width: 200px;
+  height: 300px;
+   */
+  width: auto;
+  height: auto;
+  object-fit: fill;
+  background-color: #2D333B;
+  /* background-color: red; */
+  color: white;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+.img-img{
+  width: 152px;
+  height : 152px;
+  padding-left: 2rem;
+  padding-top: 1rem;
+
+}
+

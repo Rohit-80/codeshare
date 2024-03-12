@@ -18,9 +18,10 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { ColDef, ColGroupDef, GridApi } from 'ag-grid-community';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../services/authservice.service';
-import { Subject } from 'rxjs';
+import { Subject, pipe } from 'rxjs';
+import { NotiferService } from '../services/notifier.service';
 
 let subject = new Subject<any>
 
@@ -74,7 +75,7 @@ export class TextfieldComponent implements OnInit {
   columnDef: ColDef[] | ColGroupDef[] = [
     {
       headerName : 'TextList',
-      field: 'serialNo',
+      field: 'header',
       flex: 1,
       
       resizable: true,
@@ -83,7 +84,7 @@ export class TextfieldComponent implements OnInit {
       autoHeight: true,   
       cellRenderer: (params:any) => {
         let eIconGui = document.createElement('span');         
-          return  eIconGui.innerHTML = params.data.serialNo + ' ' + '<br>' +  '<em class="material-icons" style="border : 1px solid #707070;">insert_invitation</em>'+ ' '  + params.data.time ;          
+          return  eIconGui.innerHTML = params.data.header + ' ' + '<br>' +  '<em class="material-icons" style="border : 1px solid #707070;">insert_invitation</em>'+ ' '  + params.data.time ;          
       },
     },
   ];
@@ -114,14 +115,17 @@ export class TextfieldComponent implements OnInit {
 
     let txtData = this.mainData.find((id: any[]) => id[0] == row[0].id);
     console.log(txtData)
-    this.dialog.open(ShowDialogBox, {
+    this.dialog.open(ShowDialogBox, { 
       data: txtData,
-    });
+    disableClose: true
+    }).afterClosed().subscribe(res =>console.log);
     // console.log(this.mainData);
   }
 
   refreshTextData(pageNo : number){
-    this.txtData = this.mainData.slice(pageNo*8,pageNo*8 + 8);
+    // this.txtData = this.mainData.slice(pageNo*8,pageNo*8 + 8);
+    // console.log(this.txtData,this.rowData)
+    this.txtData = this.rowData;
   }
 
   getData(pageNo : number){
@@ -132,15 +136,56 @@ export class TextfieldComponent implements OnInit {
       // this.txtData = this.mainData.slice(pageNo*8,pageNo*8 + 8);
       let rowArray: any = [];
       this.mainData.forEach((element: any) => {
-        rowArray.push({ serialNo: element[1].header, id: element[0], time : element[1].time });
+        rowArray.push({ header: element[1].header, id: element[0], time : element[1].time, txt : element[1].txt });
       });
       this.rowData = rowArray;
     });
 
   }
+
+  removeFilter(){
+     this.getData(this.curPageNo)
+  }
+
+  activeroute : ActivatedRoute = inject(ActivatedRoute)
+  notify : NotiferService = inject(NotiferService)
+
   ngOnInit(): void {
 
+     this.notify.removeTextFilterObs.subscribe(()=>this.removeFilter())
+  
+     this.activeroute.queryParams.subscribe(params=>{
+        // console.log(params)
+        if(params['catalog']?.split(',').find(val=>val == 'text')){
+             if(params['searchBy'] == 'date'){
+
+                 const [MM,DD,YY] = params['date'].split('/')
+                  let rowArray: any = [];
+                  // console.log(MM,DD,YY);
+                let txtData =  this.mainData.filter(txt=>{ let [d,m,y]=txt[1].time.split('::')[0].split('-');
+                // console.log(d,m,y,MM,DD,YY)
+                
+                     if(+d == +DD && +m == +MM && +YY == +y){
+                      rowArray.push({ header: txt[1].header, id: txt[0], time : txt[1].time });
+                      return true;
+                     }
+
+                     return false;
+                  })
+                  let o = Array.from(txtData)
+                 
+                  o.forEach((element: any) => {
+                  
+                  });
+                  this.rowData = rowArray;
+                  this.refreshTextData(this.curPageNo)
+                
+             }
+        }
+     })
+
     this.getData(this.curPageNo);
+
     subject.subscribe(res=>this.getData(this.curPageNo))
 
 
@@ -153,7 +198,7 @@ export class TextfieldComponent implements OnInit {
 
  }
     this.auth.sub.subscribe(isuser=>{
-      console.log('called2',isuser)
+      // console.log('called2',isuser)
        this.isLogged = this.auth.isLogged;
     })
   }
@@ -262,6 +307,6 @@ export class ShowDialogBox {
     // this.dd.updateData('')
   }
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('Lol');
   }
 }

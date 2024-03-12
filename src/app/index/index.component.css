@@ -1,0 +1,25 @@
+
+.index{
+     
+    width: 100%; 
+    height: auto;
+}
+
+mat-list-item{
+    
+    width: 100%;
+    text-align: center !important;
+    
+    color : white !important;
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+a:hover{
+    color: greenyellow;
+}
+a:active{
+    color: black;
+}

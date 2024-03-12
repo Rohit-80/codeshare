@@ -13,7 +13,7 @@ export class AuthserviceService {
    isLogged : boolean = false;
    sub = new Subject<any>;
    setUser(){
-    console.log('called')
+    // console.log('called')
         this.isLogged = true;
         this.User = 'Special user';
         this.sub.next(10);

@@ -101,11 +101,11 @@ export class ImgAndVideoComponent implements OnInit {
   }
 
   refreshImgData(pageNo: number) {
-    this.imgArray = this.mainImgData.slice(pageNo * 8, pageNo * 8 + 8);
+    this.imgArray = this.mainImgData?.slice(pageNo * 8, pageNo * 8 + 8);
   }
 
   refreshVideoData(pageNo: number) {
-    this.videoArray = this.mainVideoData.slice(pageNo * 8, pageNo * 8 + 8);
+    this.videoArray = this.mainVideoData?.slice(pageNo * 8, pageNo * 8 + 8);
   }
 
   getData() {
@@ -124,7 +124,7 @@ export class ImgAndVideoComponent implements OnInit {
       let arr: any[] = [];
       this.imgArray.forEach(
         (element: { filename: string; id: string; time: string }[]) => {
-          console.log(element);
+          // console.log(element);
           arr.push(
             {
               imgName: `${element[1].filename}`,

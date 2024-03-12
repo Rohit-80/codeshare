@@ -15,8 +15,8 @@ import { Observable } from 'rxjs';
       [paginationPageSize]="8"
       rowSelection="single"
       (selectionChanged)="row($event)"
-      (gridReady)="onGridReady($event)"
-    >
+      (gridReady)="onGridReady($event)" >
+
     </ag-grid-angular>
   `,
 })
@@ -34,7 +34,7 @@ export class AgGridComponent implements OnChanges {
   private gridApi!: GridApi<any>;
   obs! : Observable<any>;
   row(p: any) {
-   console.log('click')
+   
     let row = this.gridApi.getSelectedRows()
     this.out.emit(row);
      this.obs = new Observable(obs=>{

@@ -1,0 +1,108 @@
+
+
+<div class="filter-main">
+  <form [formGroup]="filterForm" class="filter-form">
+    <h1>Filter</h1>
+
+    <section class="filter-form" [formGroup]="catalogs">
+      <h4>Select your catalog:</h4>
+      <p><mat-checkbox formControlName="text">Text</mat-checkbox></p>
+      <p><mat-checkbox formControlName="image">Image</mat-checkbox></p>
+      <p><mat-checkbox formControlName="video">Video</mat-checkbox></p>
+      <p><mat-checkbox formControlName="doc">Doc</mat-checkbox></p>
+      <p><mat-checkbox formControlName="pdf">Pdf</mat-checkbox></p>
+    </section>
+
+    <mat-radio-group
+      aria-label="Select an option"
+      name="datetype"
+      formControlName="dateType"
+      (change)="valueChanged($event)"
+      [disabled]="isDisabled"
+    >
+      <mat-radio-button value="particular" [checked]="!multipleValue"
+        >Particular
+      </mat-radio-button>
+      <mat-radio-button value="between"> Between </mat-radio-button>
+    </mat-radio-group>
+    <div class="group">
+      <mat-form-field style="color: white" appearance="fill">
+        <mat-label style="color: white"
+          >{{multipleValue ? 'StartDate' : 'Date '}}</mat-label
+        >
+
+        <div [formGroup]="form">
+          <!-- <mat-label>Phone number</mat-label> -->
+          <app-formate-date
+             
+            formControlName="tel"
+            #formatedate
+            required
+            (validDateFormate)="validFormate($event)"
+            [firstPart]="firstPart"
+            [secondPart]="secondPart"
+            [thirdPart]="thirdPart"
+            [disabled]="isDisabled"
+            [clearDate]="clearDate"
+          ></app-formate-date>
+          <!-- <mat-icon matSuffix>phone</mat-icon> -->
+          
+        </div>
+        <input
+          matInput
+          [matDatepicker]="picker3"
+          [disabled]="isDisabled"
+          formControlName="startDate"
+          style="width: 0"
+        />
+
+        <mat-hint style="color: white">MM-DD-YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker3"
+        > </mat-datepicker-toggle>
+       
+        <mat-datepicker #picker3 > </mat-datepicker>
+
+        <mat-icon (click)="clear()" [color]="isDisabled ? 'primary': 'warn'"  matSuffix style="padding-left: 0.4rem;"> delete </mat-icon>
+
+      
+      </mat-form-field>
+      
+    </div>
+    <div class="group" *ngIf="multipleValue">
+      <mat-form-field appearance="fill" *ngIf="multipleValue">
+        <mat-label style="color: white">End Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker3"
+          formGroupName="endDate"
+          [disabled]="isDisabled"
+        />
+        <mat-hint style="color: white">MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="picker3"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #picker3></mat-datepicker>
+        <mat-icon>delete_outline</mat-icon>
+      </mat-form-field>
+      <!-- <button></button> -->
+    </div>
+    <div class="group">
+      <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label style="color: white"> Search by text </mat-label>
+        <input
+          matInput
+          type="text"
+          [disabled]="isDisabled"
+          formControlName="txt"
+        />
+      </mat-form-field>
+      <button><mat-icon>delete_outline</mat-icon></button>
+    </div>
+    <button mat-flat-button color="warn" [disabled]="isDisabled">
+      clearall
+    </button>
+  </form>
+</div>

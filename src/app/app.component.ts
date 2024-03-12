@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
     
     this.http.getAllImages().subscribe(data=>{
        this.imgArray = Object.entries(data)
-       console.log(this.imgArray)
+      //  console.log(this.imgArray)
     });
   
 

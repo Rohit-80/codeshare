@@ -27,7 +27,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatDialogActions, MatDialogContainer, MatDialogContent, MatDialogModule} from '@angular/material/dialog';
 import { RouterLink, RouterModule } from '@angular/router';
 import { AgGridComponent } from './ag-grid-component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { NgModel, ReactiveFormsModule } from '@angular/forms';
 import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { DialogBoxer, UserComponent } from './user/user.component';
 import { MaterialExampleModule } from './material.module';
@@ -35,10 +35,11 @@ import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
+    IndexComponent,
     AppComponent,
     TextfieldComponent,
     TextfieldComponent,
-
+    SerachFilterComponent,
     AgGridComponent,
     ImgAndVideoComponent,
     DocfileComponent,
@@ -46,10 +47,12 @@ import { MatIconModule } from '@angular/material/icon';
     PdffilesComponent,
          UserComponent,
          DialogBoxer,
-         ShowDialogBox
-
+         ShowDialogBox,
+         MyTelInput
+   
   ],
   imports: [
+    
     MatIconModule,
     MaterialExampleModule,
     NgxDocViewerModule,
@@ -83,6 +86,11 @@ export class AppModule { }
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { SerachFilterComponent } from './searchfilter/searchfilter.component';
+import { IndexComponent } from './index/index.component';
+import { MyTelInput } from './formate-date/formate-date.component';
+import { MatDatepickerActions } from '@angular/material/datepicker';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

@@ -1,21 +1,67 @@
 
+#main{
+    
+     width: 100%;
+     height: auto;
+     background-color: #1C2128;
+     display: flex;
+    
+}
+#outer-div{
+    width: 80%;
+    margin: 0 auto;
+    /* display: flex */
+    display: inline-block;
+}
+
+.index{
+    background-color: #2D333B;
+    width: 10%;
+    display: inline-block;
+    vertical-align: top;
+    height: auto;
+    display: inline-block;
+    vertical-align: top;
+   
+    margin-top: 4rem;
+    position: sticky;
+    top: 4rem;
+ 
+}
+
 .main-section{
-    width: 100%;
+    width: 75%;
+    display: inline-block;
     height: auto;
     /* background : url('../assets/vecteezy_abstract-gradient-pastel-blue-and-purple-background-neon_8617161-1.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #1C2128;
     color: #A7B2BE;
+
+    
 }
 
 .center-section{
-     width: 70%;
+     width: 90%;
      height: auto;
      margin: 1rem auto;
      background-color: #22272E;
      border:  5px solid #383C45;
 }
 
+aside{
+    width: 15%;
+    position: sticky;
+    top: 4rem;
+ 
+    height: auto;
+   display: inline-block;
+   vertical-align: top;
+  
+   margin-top: 4rem;
+  
 
+
+}
 

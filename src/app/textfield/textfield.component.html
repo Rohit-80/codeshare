@@ -1,4 +1,4 @@
-<div>
+<div >
   <mat-form-field [style.fontSize]="'18px'" appearance="fill" class="formfield">
     <mat-label style="color: #a7b2be"> Header</mat-label>
     <textarea
@@ -33,7 +33,7 @@
     class="border"
     (click)="doneText()"
   >
-    done
+    Done
   </button>
 </div>
 
@@ -41,14 +41,14 @@
   <div class="field-show">
     <div
       *ngFor="let item of txtData; index as i"
-      [id]="item[0]"
+      [id]="item.id"
       class="txt-area"
     >
       
-      <h2 *ngIf="item[1].header">{{ item[1].header }}</h2>
-      <h4>{{ item[1].time }}</h4>
+      <h2 *ngIf="item.header">{{ item.header }}</h2>
+      <h4>{{ item.time }}</h4>
       <pre class="content-txt">
-         {{ item[1].txt }} 
+         {{ item.txt }} 
       </pre>
       <div *ngIf="isLogged" style="margin-bottom: 0.3rem">
         <button
@@ -63,7 +63,7 @@
           mat-stroked-button
           color="warn"
           class="border"
-          (click)="deleteTxt(item[0])"
+          (click)="deleteTxt(item.id)"
         >
           Delete
         </button>

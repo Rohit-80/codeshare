@@ -16,8 +16,9 @@
     aria-label="day code"
     (input)="_handleInput(parts.controls.day, month)"
     #day
+    #d
     id="dayinput"
-    (keyup)="arrowShift($event.code, day, 'day', day)"
+    (keyup)="arrowShift($event.code, d, 'day', day)"
   />
   <span class="example-tel-input-spacer">&ndash;</span>
   <input

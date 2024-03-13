@@ -297,6 +297,7 @@ export class MyTelInput
     }
   }
   twice = false;
+  rtwice = false;
   arrowShift(
     key: string,
     ele: HTMLInputElement,
@@ -304,28 +305,36 @@ export class MyTelInput
     preEle?: any
   ) {
     if (eleName == 'day') {
-      if (key == 'ArrowRight') {
-        if (ele.selectionEnd == 2) {
+      if (key == 'ArrowRight' ) {
+        //  console.log('rightcalled')
+        if (ele.selectionEnd == 2 && this.rtwice) {
           this._focusMonitor.focusVia(this.monthInput, 'program');
-        }
+          this.rtwice = false;
+        }else 
+        if(ele.selectionEnd == 2) this.rtwice = true;
       }
     } else if (eleName == 'month') {
       if (key == 'ArrowRight') {
-        if (ele.selectionEnd == 2) {
+        if (ele.selectionEnd == 2 && this.rtwice) {
           this._focusMonitor.focusVia(this.yearInput, 'program');
-        }
+          this.rtwice = false;
+        }else 
+        if(ele.selectionEnd == 2) this.rtwice = true;
       }
       if (key == 'ArrowLeft') {
         if (ele.selectionEnd == 0 && this.twice) {
           this._focusMonitor.focusVia(this.dayInput, 'program');
            this.twice = false;
-        }
+        }else 
         if(ele.selectionEnd == 0) this.twice = true;
       }
     } else {
       if (key == 'ArrowLeft') {
-        if (ele.selectionEnd == 0) {
+        if (ele.selectionEnd == 0 &&  this.twice ) {
           this._focusMonitor.focusVia(this.monthInput, 'program');
+          this.twice = false;
+        }else if(ele.selectionEnd == 0){
+           this.twice = true
         }
       }
     }

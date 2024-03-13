@@ -107,28 +107,10 @@ export class AppComponent implements OnInit {
     console.log(this.myWidget)
     this.myWidget?.open();
   }
-
-  selectDocumentType(type: any) {
-    switch (type) {
-      case "doc":
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlDoc
-        );
-        break;
-      case "xl":
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlxl
-        );
-        break;
-      case "ppt":
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlppt
-        );
-        break;
-      default:
-        this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(
-          this.urlDoc
-        );
-    }
-  }
+ 
+ ok(){
+       let val:any = document.querySelector('#test');
+       val.focus()
+       val.selectionEnd = val.selectionStart = val.value.length
+ }
 }

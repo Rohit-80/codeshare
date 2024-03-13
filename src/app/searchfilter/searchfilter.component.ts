@@ -71,7 +71,7 @@ export class SerachFilterComponent implements OnInit {
   isCatalog: boolean = false;
   
   byHand: boolean = false;
-  dateObj: { area: string; exchange: string; subscriber: string };
+  dateObj: { day: string; month: string; year: string };
   
   validFormate(event: any) {
     this.isCatalog = true;
@@ -91,11 +91,11 @@ export class SerachFilterComponent implements OnInit {
         catalog: catalog,
         searchBy: 'date',
         date:
-          (this.dateObj.area || this.firstPart) +
+          (this.dateObj.day || this.firstPart) +
           '/' +
-          (this.dateObj.exchange || this.secondPart) +
+          (this.dateObj.month || this.secondPart) +
           '/' +
-          (this.dateObj.subscriber || this.thirdPart),
+          (this.dateObj.year || this.thirdPart),
       },
     });
   }

@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
+  AbstractControlOptions,
   ControlValueAccessor,
   FormBuilder,
   FormGroup,
@@ -32,16 +33,16 @@ import {
 } from '@angular/material/form-field';
 import { Observable, Subject } from 'rxjs';
 
-/** Data structure for holding telephone number. */
+
 export class MyTel {
   constructor(
-    public area: string,
-    public exchange: string,
-    public subscriber: any
+    public day: string,
+    public month: string,
+    public year: string
   ) {}
 }
 
-/** Custom `MatFormFieldControl` for telephone number input. */
+
 @Component({
   selector: 'app-formate-date',
   templateUrl: './formate-date.component.html',
@@ -61,58 +62,75 @@ export class MyTelInput
     OnChanges
 {
   static nextId = 0;
-  @ViewChild('area') areaInput: HTMLInputElement;
-  @ViewChild('exchange') exchangeInput: HTMLInputElement;
-  @ViewChild('subscriber') subscriberInput: HTMLInputElement;
+  @ViewChild('day') dayInput: HTMLInputElement;
+  @ViewChild('month') monthInput: HTMLInputElement;
+  @ViewChild('year') yearInput: HTMLInputElement;
 
   @Input('firstPart') firstPart;
   @Input('secondPart') secondPart;
   @Input('thirdPart') thirdPart;
   @Input('clearDate') clearDate: Observable<any>;
   @Output() validDateFormate: EventEmitter<any> = new EventEmitter();
-  // trueCheck : ValidatorFn = (formGroup: AbstractControl) :  ValidationErrors | null => {
 
-  //   // // let date = this.formGroup. + '/' + this.parts.value.area + '/' + this.parts.value.subscriber;
-  //   // let val = new Date(date)
-  //   // if('Invalid Date' != val.toString()){
-  //   //    return {err : true};     
-  //   // }else {
-  //   //   return null;
-  //   // }
-  // }
 
-  parts = this._formBuilder.group({
-    area: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(2),
-        Validators.pattern(/^(0[1-9])|(1[012])$/),
-      ],
-    ],
-    exchange: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(2),
-        Validators.pattern(/^(0[1-9])|([12][0-9])|(3[01])$/),
-      ],
-    ],
-    subscriber: [
-      '',
-      [
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(4),
-        Validators.pattern(/^\d{4}$/),
-        
-      ],
-      
-    ],
+
+ 
+  dateValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    let date =
+      control?.get('year')?.value +
+      '/' +
+      control?.get('day')?.value +
+      '/' +
+      control?.get('month')?.value;
+    let val = new Date(date);
+    if (
+      val.getFullYear() != +control.value.year ||
+      val.getDate() != +control.value.month ||
+      +control.value.day != val.getMonth() + 1
+    ) {
+      return { notTen: true };
+    } else {
+      return null;
+    }
+
     
-  });
+  };
+
+  parts = this._formBuilder.group(
+    {
+      day: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(2),
+          Validators.pattern(/^(0[1-9])|(1[012])$/),
+        ],
+      ],
+      month: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(2),
+          Validators.pattern(/^(0[1-9])|([12][0-9])|(3[01])$/),
+        ],
+      ],
+      year: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.maxLength(4),
+          Validators.pattern(/^\d{4}$/),
+        ],
+      ],
+    },
+    { validator: this.dateValidator } as AbstractControlOptions
+  );
+
   stateChanges = new Subject<void>();
   focused = false;
   touched = false;
@@ -120,20 +138,15 @@ export class MyTelInput
   id = `example-tel-input-${MyTelInput.nextId++}`;
   onChange = (_: any) => {};
   onTouched = () => {};
-  
- 
+
   ngOnInit(): void {
+    
+
     this.parts.statusChanges.subscribe((res) => {
-        
+      
       if (res == 'VALID') {
-        let date = this.parts.value.exchange + '/' + this.parts.value.area + '/' + this.parts.value.subscriber;
-        let val = new Date(date)
-        if('Invalid Date' != val.toString()){
-          this.validDateFormate.emit(this.parts.value);      
-        }else {
-          
-        }
-        
+        console.log('valid called')
+        this.validDateFormate.emit(this.parts.value);
       }
     });
 
@@ -144,18 +157,18 @@ export class MyTelInput
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['firstPart'] || changes['secondPart'] || changes['thirdPart']) {
-      this.parts.controls['area'].setValue(this.firstPart);
-      this.parts.controls['exchange'].setValue(this.secondPart);
-      this.parts.controls['subscriber'].setValue(this.thirdPart);
+      this.parts.controls['day'].patchValue(this.firstPart);
+      this.parts.controls['month'].patchValue(this.secondPart);
+      this.parts.controls['year'].patchValue(this.thirdPart);
     }
   }
 
   get empty() {
     const {
-      value: { area, exchange, subscriber },
+      value: { day, month, year },
     } = this.parts;
 
-    return !area && !exchange && !subscriber;
+    return !day && !month && !year;
   }
 
   get shouldLabelFloat() {
@@ -199,15 +212,15 @@ export class MyTelInput
   get value(): MyTel | null {
     if (this.parts.valid) {
       const {
-        value: { area, exchange, subscriber },
+        value: { day, month, year },
       } = this.parts;
-      return new MyTel(area!, exchange!, subscriber!);
+      return new MyTel(day!, month!, year!);
     }
     return null;
   }
   set value(tel: MyTel | null) {
-    const { area, exchange, subscriber } = tel || new MyTel('', '', '');
-    this.parts.setValue({ area, exchange, subscriber });
+    const { day, month, year } = tel || new MyTel('', '', '');
+    this.parts.patchValue({ day, month, year });
     this.stateChanges.next();
   }
 
@@ -258,7 +271,7 @@ export class MyTelInput
       this._focusMonitor.focusVia(nextElement, 'program');
     }
   }
-
+  cu = false;
   autoFocusPrev(control: AbstractControl, prevElement: HTMLInputElement): void {
     if (control.value.length < 1) {
       this._focusMonitor.focusVia(prevElement, 'program');
@@ -273,14 +286,48 @@ export class MyTelInput
   }
 
   onContainerClick() {
-    if (this.parts.controls.subscriber.valid) {
-      this._focusMonitor.focusVia(this.subscriberInput, 'program');
-    } else if (this.parts.controls.exchange.valid) {
-      this._focusMonitor.focusVia(this.subscriberInput, 'program');
-    } else if (this.parts.controls.area.valid) {
-      this._focusMonitor.focusVia(this.exchangeInput, 'program');
+    if (this.parts.controls.year.valid) {
+      // this._focusMonitor.focusVia(this.yearInput, 'program');
+    } else if (this.parts.controls.month.valid) {
+      // this._focusMonitor.focusVia(this.yearInput, 'program');
+    } else if (this.parts.controls.day.valid) {
+      // this._focusMonitor.focusVia(this.monthInput, 'program');
     } else {
-      this._focusMonitor.focusVia(this.areaInput, 'program');
+      this._focusMonitor.focusVia(this.dayInput, 'program');
+    }
+  }
+  twice = false;
+  arrowShift(
+    key: string,
+    ele: HTMLInputElement,
+    eleName: string,
+    preEle?: any
+  ) {
+    if (eleName == 'day') {
+      if (key == 'ArrowRight') {
+        if (ele.selectionEnd == 2) {
+          this._focusMonitor.focusVia(this.monthInput, 'program');
+        }
+      }
+    } else if (eleName == 'month') {
+      if (key == 'ArrowRight') {
+        if (ele.selectionEnd == 2) {
+          this._focusMonitor.focusVia(this.yearInput, 'program');
+        }
+      }
+      if (key == 'ArrowLeft') {
+        if (ele.selectionEnd == 0 && this.twice) {
+          this._focusMonitor.focusVia(this.dayInput, 'program');
+           this.twice = false;
+        }
+        if(ele.selectionEnd == 0) this.twice = true;
+      }
+    } else {
+      if (key == 'ArrowLeft') {
+        if (ele.selectionEnd == 0) {
+          this._focusMonitor.focusVia(this.monthInput, 'program');
+        }
+      }
     }
   }
 
@@ -305,3 +352,4 @@ export class MyTelInput
     this.onChange(this.value);
   }
 }
+

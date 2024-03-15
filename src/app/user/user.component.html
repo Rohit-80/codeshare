@@ -2,12 +2,12 @@
 
 <div class="button-group">
     
-    <button mat-flat-button color="accent" (click)="changeUser()">
+    <button mat-stroked-button color="accent" (click)="changeUser()">
          {{ isLogged ?  'Special' : 'Normal '}}
     </button>
 
-    <button  *ngIf="isLogged" mat-flat-button color="accent" (click)="sessionOut()">
-        sessionOut
+    <button  *ngIf="isLogged" mat-stroked-button color="warn" (click)="sessionOut()">
+        Sessionout
    </button>
 
 </div>

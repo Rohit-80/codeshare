@@ -1,63 +1,153 @@
-<div >
-  <mat-form-field [style.fontSize]="'18px'" appearance="fill" class="formfield">
-    <mat-label style="color: #a7b2be"> Header</mat-label>
-    <textarea
-      matInput
-      #textheader
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="1"
-      cdkAutosizeMaxRows="1"
-      style="background-color: #2d333b"
-    ></textarea>
-  </mat-form-field>
-  <mat-form-field [style.fontSize]="'18px'" appearance="fill" class="formfield">
-    <mat-label style="color: #a7b2be">Textarea</mat-label>
-    <textarea
-      matInput
-      #textfield
-      cdkTextareaAutosize
-      #autosize="cdkTextareaAutosize"
-      cdkAutosizeMinRows="4"
-      style="
-        background-color: #2d333b;
-        border-bottom: 2px solid rgb(70, 70, 70, 0.2);
-      "
-      cdkAutosizeMaxRows="100"
-    ></textarea>
-  </mat-form-field>
-  <button
-    *ngIf="isLogged"
-    mat-stroked-button
-    color="primary"
-    class="border"
-    (click)="doneText()"
-  >
-    Done
-  </button>
+
+<div [formGroup]="inputForm">
+  <mat-accordion >
+    <mat-expansion-panel style="background-color: #1c2128" [disabled]="!isLogged">
+      <mat-expansion-panel-header>
+        <mat-panel-title style="color: #a7b0a7; font-weight: bold">
+          Text input
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-form-field
+        [style.fontSize]="'18px'"
+        appearance="outline"
+        class="formfield"
+      >
+        <mat-label style="color: #a7b2be"> Header</mat-label>
+        <textarea
+          matInput
+          #textheader
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="1"
+          formControlName="header"
+          style="
+            background-color: #1c2128;
+            border-bottom: 2px solid rgb(70, 70, 70, 1);
+          "
+        ></textarea>
+        <mat-hint
+          *ngIf="inputForm.get('header')?.errors?.['less'] && inputForm.get('header')?.touched"
+          style="color: red; opacity: 0.5"
+        >
+          min 3 char required
+        </mat-hint>
+      </mat-form-field>
+      <mat-form-field
+        [style.fontSize]="'18px'"
+        appearance="outline"
+        class="formfield"
+      >
+        <mat-label style="color: #a7b2be">Description</mat-label>
+        <textarea
+          matInput
+          #textfield
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="4"
+          formControlName="description"
+          style="
+            background-color: 1C2128;
+            border-bottom: 2px solid rgb(70, 70, 70, 1);
+          "
+          cdkAutosizeMaxRows="100"
+        ></textarea>
+        <mat-hint
+          *ngIf="inputForm.get('description')?.errors?.['less'] && inputForm.get('description')?.touched"
+          style="color: red; opacity: 0.5"
+        >
+          min 10 char required
+        </mat-hint>
+      </mat-form-field>
+
+      <div >
+        <mat-chip-list aria-label="Fish selection" name="tag">
+          <mat-chip
+            color="warn"
+            (click)="c('fun')"
+            [selected]="selectedChip == 'fun'"
+            >Fun</mat-chip
+          >
+          <mat-chip
+            (click)="c('code-snippet')"
+            color="warn"
+            [selected]="selectedChip == 'code-snippet'"
+            >Code-snippet</mat-chip
+          >
+          <mat-chip
+            color="accent"
+            value="text"
+            (click)="c('text-snippet')"
+            [selected]="selectedChip == 'text-snippet'"
+            >Text-snippet</mat-chip
+          >
+          <mat-chip
+            color="warn"
+            (click)="c('data')"
+            [selected]="selectedChip == 'data'"
+            >Data</mat-chip
+          >
+        </mat-chip-list>
+      </div>
+
+      <button
+        *ngIf="isLogged"
+        mat-flat-button
+        [disabled]="!inputForm.valid"
+        color="accent"
+        class="border"
+        (click)="doneText()"
+      >
+        <span style="color: white !important"> Done </span>
+      </button>
+      <button
+        *ngIf="isLogged"
+        mat-stroked-button
+        color="warn"
+        class="border"
+        (click)="clearText()"
+      >
+        Clear
+      </button>
+      <button
+        *ngIf="isLogged"
+        mat-stroked-button
+        color="warn"
+        class="border"
+        (click)="cancelText()"
+      >
+        Cancel
+      </button>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
 
 <div class="main-section">
-  <div class="field-show">
+  <div class="field-show" > 
     <div
       *ngFor="let item of txtData; index as i"
       [id]="item.id"
       class="txt-area"
+      id="scrollbar2"
     >
-      
       <h2 *ngIf="item.header">{{ item.header }}</h2>
-      <h4>{{ item.time }}</h4>
+       <div style="display:  flex;  justify-content: space-between">
+      <h5 style="display: inline-block;">{{ item.time | date:'EEE, MMM d, y | h:mm a ' }}</h5>
+      <mat-chip color="accent" selected class="chip">Accent fish</mat-chip> 
+      </div>
+       
       <pre class="content-txt">
          {{ item.txt }} 
       </pre>
       <div *ngIf="isLogged" style="margin-bottom: 0.3rem">
         <button
           mat-stroked-button
-          color="primary"
+          color="accent"
           class="border"
           (click)="openDialog(item)"
         >
-          Update
+          <mat-icon> edit </mat-icon> Edit
         </button>
         <button
           mat-stroked-button
@@ -65,7 +155,7 @@
           class="border"
           (click)="deleteTxt(item.id)"
         >
-          Delete
+        <mat-icon> delete </mat-icon> Delete
         </button>
       </div>
 
@@ -74,16 +164,13 @@
   </div>
 
   <aside>
-
-
     <!-- <app-ag-grid [rowDatas]="rowData" [colDefs]="columnDefss" (out)="call($event)"> </app-ag-grid> -->
 
     <ag-grid-angular
       class="ag-theme-quartz-dark"
-      style="width: 100%; height: 100%; "
+      style="width: 100%; height: 100%"
       [rowData]="rowData"
       [columnDefs]="columnDef"
-      
       [pagination]="true"
       (paginationChanged)="paginationChanged($event)"
       [paginationPageSize]="8"

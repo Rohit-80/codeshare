@@ -59,7 +59,6 @@ export class SerachFilterComponent implements OnInit {
   });
 
   clearDate = new Subject<any>();
-  
 
   constructor(private _formBuilder: FormBuilder) {}
 
@@ -67,12 +66,12 @@ export class SerachFilterComponent implements OnInit {
   isDisabled: boolean = true;
   multipleValue: boolean = false;
   router: Router = inject(Router);
-  notify : NotiferService = inject(NotiferService)
+  notify: NotiferService = inject(NotiferService);
   isCatalog: boolean = false;
-  
+
   byHand: boolean = false;
   dateObj: { day: string; month: string; year: string };
-  
+
   validFormate(event: any) {
     this.isCatalog = true;
     this.dateObj = event;
@@ -100,8 +99,6 @@ export class SerachFilterComponent implements OnInit {
     });
   }
 
-
-
   firstPart = null;
   secondPart = null;
   thirdPart = null;
@@ -109,18 +106,12 @@ export class SerachFilterComponent implements OnInit {
   clear() {
     this.clearDate.next({});
     this.notify.removeTextFilter();
-    
-
   }
   ngOnInit(): void {
-    
-
     this.color = 'accent';
 
     this.filterForm = new FormGroup({
-      startDate: new FormControl(null, [
-        Validators.required,
-      ]),
+      startDate: new FormControl(null, [Validators.required]),
       endDate: new FormControl(new Date()),
       dateType: new FormControl(null),
       txt: new FormControl(null, Validators.required),
@@ -163,6 +154,4 @@ export class SerachFilterComponent implements OnInit {
       this.multipleValue = false;
     }
   }
-
-
 }

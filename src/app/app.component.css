@@ -4,46 +4,52 @@
      width: 100%;
      height: auto;
      background-color: #1C2128;
-     display: flex;
+     /* display: flex; */
     
 }
 #outer-div{
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
     /* display: flex */
-    display: inline-block;
+    /* display: inline-block; */
+    /* position: fixed; */
+    /* background-color: red; */
+    /* top : 10rem */
 }
 
 .index{
     background-color: #2D333B;
-    width: 10%;
+    width: 5%;
     display: inline-block;
     vertical-align: top;
     height: auto;
     display: inline-block;
     vertical-align: top;
    
-    margin-top: 4rem;
+    /* margin-top: 4rem; */
     position: sticky;
-    top: 4rem;
+    top: 1rem;
  
 }
 
 .main-section{
-    width: 75%;
+    width: 80%;
     display: inline-block;
+    /* margin-top: 1rem; */
     height: auto;
+    position: sticky;
     /* background : url('../assets/vecteezy_abstract-gradient-pastel-blue-and-purple-background-neon_8617161-1.jpg'); */
     background-repeat: no-repeat;
     background-size: cover;
     background-color: #1C2128;
     color: #A7B2BE;
+    
 
     
 }
 
 .center-section{
-     width: 90%;
+     width: 98%;
      height: auto;
      margin: 1rem auto;
      background-color: #22272E;
@@ -53,13 +59,13 @@
 aside{
     width: 15%;
     position: sticky;
-    top: 4rem;
+
  
     height: auto;
    display: inline-block;
    vertical-align: top;
   
-   margin-top: 4rem;
+   top: 1rem;
   
 
 

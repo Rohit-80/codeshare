@@ -3,3 +3,15 @@ button{
     margin: 0 0.3rem;
     
 }
+
+.dialog{
+     color:  white;
+     opacity: 0.8;
+}
+input{
+    height: auto;
+    border: 1px solid black;
+}
+button{
+    border: 1px solid white ;
+}

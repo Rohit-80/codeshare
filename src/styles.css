@@ -12,5 +12,14 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
 
 
+@import 'ngx-toastr/toastr';
+
+
+/* @import 'ngx-toastr/toastr-bs4-alert'; */
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+mat-dialog-container {
+    background-color: #1B2026 !important;
+ }

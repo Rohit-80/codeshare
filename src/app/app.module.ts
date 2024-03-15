@@ -32,6 +32,11 @@ import { NgxDocViewerModule } from 'ngx-doc-viewer';
 import { DialogBoxer, UserComponent } from './user/user.component';
 import { MaterialExampleModule } from './material.module';
 import { MatIconModule } from '@angular/material/icon';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatChipList, MatChipsModule} from '@angular/material/chips';
+import { CommonModule } from '@angular/common';
+
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -48,11 +53,14 @@ import { MatIconModule } from '@angular/material/icon';
          UserComponent,
          DialogBoxer,
          ShowDialogBox,
-         MyTelInput
+         MyTelInput,
    
   ],
   imports: [
-    
+  CommonModule,
+    MatChipsModule,
+    DatePipe,
+    MatExpansionModule,
     MatIconModule,
     MaterialExampleModule,
     NgxDocViewerModule,
@@ -76,7 +84,13 @@ import { MatIconModule } from '@angular/material/icon';
      PdfViewerModule,
 
 
-     BrowserAnimationsModule,MatProgressSpinnerModule,MatDividerModule
+     BrowserAnimationsModule,MatProgressSpinnerModule,MatDividerModule,
+     
+     ToastrModule.forRoot({
+      positionClass : 'toast-top-center',
+      closeButton : true,
+      timeOut : 5000
+     })
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -90,6 +104,7 @@ import { SerachFilterComponent } from './searchfilter/searchfilter.component';
 import { IndexComponent } from './index/index.component';
 import { MyTelInput } from './formate-date/formate-date.component';
 import { MatDatepickerActions } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries

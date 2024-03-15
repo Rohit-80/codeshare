@@ -10,17 +10,25 @@
 }
 
 .formfield{
-    width: 80%;
+    width: 100%;
+    background-color:  #1C2128;
+    /* border: 1px solid white; */
    
 }
-
+.ag-cell-wrap-text {
+  word-break: break-word !important;
+}
 .field-show{
     width: 80%;
     height: 100%;
     overflow-y: scroll;
-    scrollbar-color:     #1C2128 #707070;
+    scrollbar-color:     #707070  #1C2128;
+    scrollbar-width: 10%;
+  
+   
     background-color: #22272E
 }
+
 .txt-area{
    border : 2px solid rgb(70, 70, 70,0.8);
    margin: 0.5rem;
@@ -29,15 +37,26 @@
 }
 button{
     height: 2rem;
-     vertical-align:top;
+    margin:0.6rem 0.5rem;
+     /* vertical-align:top; */
 }
 
 .content-txt{
     border: 2px solid rgb(70, 70, 70,0.2) ;
     background-color: #2D333B;
+    
    
      padding: 0.2rem 0.3rem;
      text-align:start;
+     
+ 
+}
+pre {
+  white-space: pre-wrap;
+}
+.chip{
+  align-self: flex-end;
+  align-items: flex-end;
 }
 aside{
     /* background-color:; */
@@ -58,3 +77,19 @@ aside{
     line-height: 0.3rem;
 
   }
+
+  #scrollbar2::-webkit-scrollbar {
+    width: 12px;
+}
+
+.field-show::scrollbar-track{
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+}
+
+#scrollbar2::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #363636;
+}

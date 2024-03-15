@@ -1,15 +1,21 @@
 
 .index{
-     
+    margin: 0 ;
+    padding: 0;
     width: 100%; 
     height: auto;
+    /* background-color: red; */
 }
 
+mat-list{
+    text-align: center;
+}
 mat-list-item{
     
+    margin: 0;
+    padding: 0;
     width: 100%;
     text-align: center !important;
-    
     color : white !important;
 }
 

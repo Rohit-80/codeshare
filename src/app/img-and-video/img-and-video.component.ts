@@ -137,9 +137,15 @@ export class ImgAndVideoComponent implements OnInit {
       arr.reverse();
       this.rowDataImg = arr;
       arr = [];
-      this.videoArray.forEach((element: { filename: string; id: string , time:string}[]) => {
-        arr.push({ videoName: element[1].filename, id: element[0],time : element[1].time });
-      });
+      this.videoArray.forEach(
+        (element: { filename: string; id: string; time: string }[]) => {
+          arr.push({
+            videoName: element[1].filename,
+            id: element[0],
+            time: element[1].time,
+          });
+        }
+      );
       arr.reverse();
       this.rowDataVideo = arr;
     });

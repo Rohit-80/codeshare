@@ -102,9 +102,43 @@ export class SerachFilterComponent implements OnInit {
   firstPart = null;
   secondPart = null;
   thirdPart = null;
+  timeId : any;
+  search(sval : string){
+     if(this.timeId) clearTimeout(this.timeId);
 
+    this.timeId = setTimeout(()=>{
+     
+      let catalog = Object.entries(this.catalogs.value)
+      .filter((val) => val[1] == true)
+      .map((val) => val[0])
+      .join(',');
+
+      this.router.navigate(['./'], {
+        queryParams: {
+          catalog: catalog,
+          searchBy: 'text',
+          value : sval
+        },
+      });
+
+
+    },1000);
+
+     
+     
+  }
   clear() {
     this.clearDate.next({});
+    this.notify.removeTextFilter();
+  }
+  clearTxt(){
+    this.filterForm.get('txt').reset()
+    this.notify.removeTextFilter();
+  }
+
+  clearAll(){
+    // this.filterForm.reset()
+    this.catalogs.reset()
     this.notify.removeTextFilter();
   }
   ngOnInit(): void {
@@ -112,15 +146,20 @@ export class SerachFilterComponent implements OnInit {
 
     this.filterForm = new FormGroup({
       startDate: new FormControl(null, [Validators.required]),
-      endDate: new FormControl(new Date()),
+      endDate: new FormControl(null),
       dateType: new FormControl(null),
-      txt: new FormControl(null, Validators.required),
+      txt: new FormControl({value : null ,disabled : true}, Validators.required),
     });
 
     this.catalogs.valueChanges.subscribe((res) => {
       let arr = Object.entries(res).filter((pair) => pair[1] == true);
       this.isDisabled = arr.length > 0 ? false : true;
-
+      if(!this.isDisabled){
+         this.filterForm.get('txt').enable()
+      }else{
+        this.filterForm.get('txt').reset()
+        this.filterForm.get('txt').disable()
+      }
       if (!this.isDisabled && this.isCatalog) {
         this.catalog();
       }

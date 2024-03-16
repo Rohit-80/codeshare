@@ -1,5 +1,3 @@
-
-
 <div class="filter-main">
   <form [formGroup]="filterForm" class="filter-form">
     <h1>Filter</h1>
@@ -34,7 +32,6 @@
         <div [formGroup]="form">
           <!-- <mat-label>Phone number</mat-label> -->
           <app-formate-date
-             
             formControlName="tel"
             #formatedate
             required
@@ -46,7 +43,6 @@
             [clearDate]="clearDate"
           ></app-formate-date>
           <!-- <mat-icon matSuffix>phone</mat-icon> -->
-          
         </div>
         <input
           matInput
@@ -57,18 +53,23 @@
         />
 
         <mat-hint style="color: white">MM-DD-YYYY</mat-hint>
-        <mat-datepicker-toggle
+        <mat-datepicker-toggle matSuffix [for]="picker3">
+        </mat-datepicker-toggle>
+
+        <mat-datepicker #picker3> </mat-datepicker>
+        <!-- <button matSuffix mat-icon-button [disabled]="isDisabled" color="accent"  aria-label="Example icon button with a plus one icon">
+          <mat-icon>delete</mat-icon>
+        </button> -->
+        <button
+          mat-icon-button
           matSuffix
-          [for]="picker3"
-        > </mat-datepicker-toggle>
-       
-        <mat-datepicker #picker3 > </mat-datepicker>
-
-        <mat-icon (click)="clear()" [color]="isDisabled ? 'primary': 'warn'"  matSuffix style="padding-left: 0.4rem;"> delete </mat-icon>
-
-      
+          [disabled]="isDisabled"
+          color="warn"
+          (click)="clear()"
+        >
+          <mat-icon> delete </mat-icon>
+        </button>
       </mat-form-field>
-      
     </div>
     <div class="group" *ngIf="multipleValue">
       <mat-form-field appearance="fill" *ngIf="multipleValue">
@@ -85,23 +86,42 @@
           [for]="picker3"
         ></mat-datepicker-toggle>
         <mat-datepicker #picker3></mat-datepicker>
-        <mat-icon>delete_outline</mat-icon>
+        <button
+          mat-icon-button
+          matSuffix
+          [disabled]="isDisabled"
+          color="warn"
+          (click)="clear()"
+        >
+          <mat-icon> delete </mat-icon>
+        </button>
       </mat-form-field>
       <!-- <button></button> -->
     </div>
     <div class="group">
-      <mat-form-field class="example-form-field" appearance="fill">
+      <mat-form-field class="example-form-field" appearance="standard" >
         <mat-label style="color: white"> Search by text </mat-label>
         <input
           matInput
+          #searchv
           type="text"
-          [disabled]="isDisabled"
+          (input)="search(searchv.value)"
           formControlName="txt"
+          
         />
+
+        <button
+          mat-icon-button
+          matSuffix
+          [disabled]="isDisabled"
+          color="warn"
+          (click)="clearTxt()"
+        >
+          <mat-icon> delete </mat-icon>
+        </button>
       </mat-form-field>
-      <button><mat-icon>delete_outline</mat-icon></button>
     </div>
-    <button mat-flat-button color="warn" [disabled]="isDisabled">
+    <button mat-flat-button color="warn" [disabled]="isDisabled" (click)="clearAll()">
       clearall
     </button>
   </form>

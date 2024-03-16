@@ -12,7 +12,7 @@ import { HttpserviceService } from '../services/httpservice.service';
 import 'ag-grid-community';
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { NgZone } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { map, startWith, take } from 'rxjs/operators';
 import * as moment from 'moment';
 import {
   MAT_DIALOG_DATA,
@@ -22,7 +22,7 @@ import {
 import { ColDef, ColGroupDef, GridApi } from 'ag-grid-community';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthserviceService } from '../services/authservice.service';
-import { Subject, pipe } from 'rxjs';
+import { Observable, Subject, pipe } from 'rxjs';
 import { NotiferService } from '../services/notifier.service';
 import { DatePipe } from '@angular/common';
 import {
@@ -34,6 +34,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 
 let subject = new Subject<any>();
 
@@ -141,13 +143,21 @@ export class TextfieldComponent implements OnInit {
   ];
 
   rowData = [];
+  tags: string[] = ['data'];
+  remove(fruit: string): void {
+    const index = this.tags.indexOf(fruit);
+
+    if (index >= 0 && this.tags.length > 1) {
+      this.tags.splice(index, 1);
+    }
+  }
 
   openDialog(data: any) {
-    console.log(data)
+    console.log(data);
     this.dialog.open(DialogBox, {
       data: data,
       width: '100%',
-        height: '90%',
+      height: '90%',
     });
   }
 
@@ -167,13 +177,12 @@ export class TextfieldComponent implements OnInit {
 
     let txtData = this.mainData.find((id: any[]) => id[0] == row[0].id);
     txtData = {
-       header : txtData[1].header,
-       time : txtData[1].time,
-       txt : txtData[1].txt,
-       id : txtData[0]
-    }
+      header: txtData[1].header,
+      time: txtData[1].time,
+      txt: txtData[1].txt,
+      id: txtData[0],
+    };
     console.log(txtData);
-
 
     this.dialog
       .open(ShowDialogBox, {
@@ -192,7 +201,12 @@ export class TextfieldComponent implements OnInit {
     // console.log(this.txtData,this.rowData)
     this.txtData = this.rowData;
   }
-
+  colObj = {
+    data: 'accent',
+    fun: 'warn',
+    'text-snippet': 'primary',
+    'code-snippet': 'warn',
+  };
   getData(pageNo: number) {
     //  console.log('get Called')
     this.http.getAllTextData().subscribe((txtdata) => {
@@ -205,6 +219,7 @@ export class TextfieldComponent implements OnInit {
           id: element[0],
           time: element[1].time,
           txt: element[1].txt,
+          tags: element[1].tags,
         });
       });
       this.rowData = rowArray;
@@ -217,6 +232,24 @@ export class TextfieldComponent implements OnInit {
 
   activeroute: ActivatedRoute = inject(ActivatedRoute);
   notify: NotiferService = inject(NotiferService);
+
+  decorate(txt: string, searchValue): string {
+    let re = new RegExp(searchValue, 'gi');
+    return txt.replace(re, `<mark  > <strong>${searchValue}</strong></mark>`);
+
+    let txtx = txt
+      .toString()
+      .split(' ')
+      .map((part) => {
+        if (part.toLowerCase().includes(searchValue.toLowerCase())) {
+          return `<mark> ${part} </mark>`;
+        }
+        return part;
+      })
+      .join(' ');
+
+    return txtx;
+  }
 
   ngOnInit(): void {
     this.notify.removeTextFilterObs.subscribe(() => this.removeFilter());
@@ -237,12 +270,41 @@ export class TextfieldComponent implements OnInit {
                 header: txt[1].header,
                 id: txt[0],
                 time: txt[1].time,
+                txt: txt[1].txt,
               });
               return true;
             }
 
             return false;
           });
+          let o = Array.from(txtData);
+
+          o.forEach((element: any) => {});
+          this.rowData = rowArray;
+          this.refreshTextData(this.curPageNo);
+        } else if (params['searchBy'] == 'text') {
+          let searchValue: string = params['value'];
+          if (searchValue == '') return;
+
+          let rowArray = [];
+
+          let txtData = this.mainData.filter((txt) => {
+            if (
+              txt[1].header.toLowerCase().includes(searchValue.toLowerCase()) ||
+              txt[1].txt.toLowerCase().includes(searchValue.toLowerCase()) ||
+              txt[1].time.toLowerCase().includes(searchValue.toLowerCase())
+            ) {
+              rowArray.push({
+                header: this.decorate(txt[1].header, searchValue),
+                id: txt[0],
+                time: txt[1].time,
+                txt: this.decorate(txt[1].txt, searchValue),
+              });
+              return true;
+            }
+            return false;
+          });
+
           let o = Array.from(txtData);
 
           o.forEach((element: any) => {});
@@ -270,36 +332,16 @@ export class TextfieldComponent implements OnInit {
   c(chip: string) {
     this.inputForm.controls.tag.patchValue(chip);
     this.selectedChip = chip;
+    if (this.tags.indexOf(chip) == -1) this.tags.push(chip);
   }
   doneText() {
-  
     console.log(this.textInput?.nativeElement.value);
-    const currentDate = new Date();
-
-    const currentDayOfMonth = currentDate.getDate();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    const currhour = currentDate.getHours();
-    const currmin = currentDate.getMinutes();
-    const currsec = currentDate.getSeconds();
-
-    const dateString =
-      currentDayOfMonth +
-      '-' +
-      (currentMonth + 1) +
-      '-' +
-      currentYear +
-      ' :: ' +
-      currhour +
-      ':' +
-      currmin +
-      ':' +
-      currsec;
 
     let data = {
       header: this.textHeader.nativeElement.value,
       txt: this.textInput.nativeElement.value,
-      time: dateString,
+      time: new Date().toJSON(),
+      tags: this.tags,
     };
 
     this.textHeader.nativeElement.value = '';
@@ -309,7 +351,10 @@ export class TextfieldComponent implements OnInit {
       .addTextData(data)
       .subscribe((res) => this.getData(this.curPageNo));
   }
-
+  clear() {
+    this.inputForm.get('txt').reset();
+    this.removeFilter();
+  }
   clearText() {
     console.log(this.inputForm.value);
     this.inputForm.reset();
@@ -322,67 +367,203 @@ export class TextfieldComponent implements OnInit {
     this.http.deleteTxt(id).subscribe((res) => this.getData(this.curPageNo));
   }
 }
-
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 @Component({
   selector: 'dialog-elements-example-dialog',
-   styleUrls: ['./dialog.css'],
+  styleUrls: ['./dialog.css'],
   template: `
-   <div mat-dialog-title class="dialog-title">
-       <mat-icon>smile</mat-icon>
-  <button mat-icon-button aria-label="close dialog" mat-dialog-close style="color: white;" >
-    <mat-icon  >close</mat-icon>
-  </button>
-</div>
-    <div class="txt-area">
+    <div mat-dialog-title class="dialog-title" >
+      <mat-icon>smile</mat-icon>
+      <button
+        mat-icon-button
+        aria-label="close dialog"
+        mat-dialog-close
+        style="color: white;"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="txt-area" [formGroup]="updateForm" >
 
-
-    <h2 >{{ item.header }}</h2>
-
+      <input matInput formControlName="header" [value]="item.header"/>
 
       <div style="display:  flex;  justify-content: space-between">
         <h5 style="display: inline-block;">
           {{ item.time | date : 'EEE, MMM d, y | h:mm a ' }}
         </h5>
-        <mat-chip color="accent" selected class="chip">Accent fish</mat-chip>
+        <!-- <mat-chip color="accent" selected class="chip">Accent fish</mat-chip> -->
+
+      
       </div>
+      <mat-form-field style="width: 100%;"  class="chipclass" appearance="fill">
+          <mat-label>Favorite Tags</mat-label>
+          <mat-chip-list  #chipList aria-label="Fruit selection">
+            <mat-chip *ngFor="let fruit of fruits" (removed)="remove(fruit)" style=" text-transform : capitalize ;  color :  rgb(255, 255, 255,0.8);; background-color : black">
+              {{ fruit }}
+              <button matChipRemove *ngIf="fruits.length > 1">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+            <input
+             
+              placeholder="Tags..."
+              #fruitInput
+              [formControl]="fruitCtrl"
+              [matAutocomplete]="auto"
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="add($event)"
+              
+            />
+          </mat-chip-list>
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="selected($event)"
+          >
+            <mat-option
+              *ngFor="let fruit of filteredFruits | async"
+              [value]="fruit"
+              style="
+               color :  rgb(255, 255, 255,0.8);
+               background-color :#1C2128 ;
+               text-transform : capitalize ;
+              "
+            >
+              {{ fruit }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
 
-
-
-      <textarea class="content-txt" [value]="item.txt">
-      
-      </textarea>
-     
-      
+      <textarea formControlName="txt" class="content-txt" [value]="item.txt"> </textarea>
 
       <div style="margin-bottom: 0.3rem">
-        <button mat-stroked-button color="accent" class="border" (click)="updateData('')"> 
+        <button
+          mat-stroked-button
+          color="accent"
+          class="border"
+          [disabled]="!isChanged"
+          (click)="updateData('')"
+        >
           <mat-icon> update </mat-icon> Update
         </button>
-        <button mat-stroked-button color="warn" class="border" (click)="onNoClick()">
+        <button
+          mat-stroked-button
+          color="warn"
+          class="border"
+          (click)="onNoClick()"
+        >
           <mat-icon> close </mat-icon> Cancel
         </button>
       </div>
 
-      <mat-divider></mat-divider>
+     
     </div>
   `,
 })
-export class DialogBox {
+export class DialogBox implements OnInit {
+
+
+
+ isChanged : boolean  = false;
+
   constructor(
     public dialogRef: MatDialogRef<DialogBox>,
     @Inject(MAT_DIALOG_DATA) public item: any,
     private http: HttpserviceService
+  ) {
+    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      startWith(null),
+      map((fruit: string | null) =>
+        fruit ? this._filter(fruit) : this.allFruits.slice()
+      )
+    );
+  }
+  ngOnInit(){
+     if(this.item.tags)
+      this.fruits = this.item.tags;
 
-  ) {}
+      this.updateForm.valueChanges.subscribe(()=>this.isChanged = true);
+  }
+
+  updateForm = new FormGroup({
+     header : new FormControl(this.item.header),
+     txt : new FormControl(this.item.txt),
+     tags : new FormControl(this.item.tags),
+     time : new FormControl('')
+  })
+
+
 
   updateData(txt: string) {
-    this.item.txt = txt;
+    this.updateForm.get('tags').setValue(this.fruits);
+    this.updateForm.get('time').patchValue(new Date().toJSON());
+
+  
+
+
+
     this.http
-      .updateData(this.item, this.item.id)
-      .subscribe((res) => subject.next({}));
+      .updateData(this.updateForm.value, this.item.id)
+      .subscribe((res) => {subject.next({}); this.onNoClick()});
   }
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  fruitCtrl = new FormControl('');
+  filteredFruits: Observable<string[]>;
+  fruits: string[] = ['data'];
+  allFruits: string[] = ['fun', 'code-snippet', 'text-snippet', 'data'];
+
+  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+
+  add(event: MatChipInputEvent): void {
+     console.log('event',event)
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value && this.fruits.indexOf(value) == -1) {
+      console.log(value)
+      this.fruits.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.fruitCtrl.setValue(null);
+  }
+
+  remove(fruit: string): void {
+    const index = this.fruits.indexOf(fruit);
+
+    if (index >= 0 && this.fruits.length > 1) {
+      this.isChanged = true
+      this.fruits.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    let val = event.option.viewValue;
+
+
+    if(this.fruits.indexOf(val) < 0){
+      this.isChanged = true
+      this.fruits.push(event.option.viewValue);
+    }
+    
+
+    
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allFruits.filter((fruit) =>
+      fruit.toLowerCase().includes(filterValue)
+    );
   }
 }
 
@@ -390,17 +571,19 @@ export class DialogBox {
   selector: 'show-dialog-box',
   styleUrls: ['./dialog.css'],
   template: `
-       <div mat-dialog-title class="dialog-title">
-       <mat-icon>smile</mat-icon>
-  <button mat-icon-button aria-label="close dialog" mat-dialog-close style="color: white;" >
-    <mat-icon  >close</mat-icon>
-  </button>
-</div>
+    <div mat-dialog-title class="dialog-title">
+      <mat-icon>smile</mat-icon>
+      <button
+        mat-icon-button
+        aria-label="close dialog"
+        mat-dialog-close
+        style="color: white;"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <div class="txt-area">
-
-
-    <h2 >{{ item.header }}</h2>
-
+      <h2>{{ item.header }}</h2>
 
       <div style="display:  flex;  justify-content: space-between">
         <h5 style="display: inline-block;">
@@ -414,7 +597,12 @@ export class DialogBox {
       </pre
       >
       <div style="margin-bottom: 0.3rem">
-        <button mat-stroked-button color="accent" class="border" (click)="updateData()"> 
+        <button
+          mat-stroked-button
+          color="accent"
+          class="border"
+          (click)="updateData()"
+        >
           <mat-icon> edit </mat-icon> Edit
         </button>
         <button mat-stroked-button color="warn" class="border">
@@ -436,11 +624,11 @@ export class ShowDialogBox {
 
   updateData() {
     // this.dd.updateData('')
-    this.dialog.open(DialogBox,{
-      data : this.item,
+    this.dialog.open(DialogBox, {
+      data: this.item,
       width: '100%',
       height: '90%',
-    })
+    });
     this.onNoClick();
   }
   onNoClick(): void {

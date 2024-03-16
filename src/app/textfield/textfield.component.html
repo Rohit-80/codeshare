@@ -1,7 +1,9 @@
-
 <div [formGroup]="inputForm">
-  <mat-accordion >
-    <mat-expansion-panel style="background-color: #1c2128" [disabled]="!isLogged">
+  <mat-accordion>
+    <mat-expansion-panel
+      style="background-color: #1c2128"
+      [disabled]="!isLogged"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title style="color: #a7b0a7; font-weight: bold">
           Text input
@@ -61,7 +63,23 @@
         </mat-hint>
       </mat-form-field>
 
-      <div >
+      <div>
+        <mat-form-field
+          [style.fontSize]="'18px'"
+          appearance="standard"
+          class="formfield"
+        >
+          <mat-label style="color: #a7b2be"> #Tags </mat-label>
+          <mat-chip-list #chipList aria-label="Fruit selection">
+            <mat-chip *ngFor="let fruit of tags" (removed)="remove(fruit)">
+              {{ fruit }}
+              <button matChipRemove *ngIf="tags.length > 1">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-list>
+        </mat-form-field>
+
         <mat-chip-list aria-label="Fish selection" name="tag">
           <mat-chip
             color="warn"
@@ -124,21 +142,32 @@
 </div>
 
 <div class="main-section">
-  <div class="field-show" > 
+  <div class="field-show">
     <div
       *ngFor="let item of txtData; index as i"
       [id]="item.id"
       class="txt-area"
       id="scrollbar2"
     >
-      <h2 *ngIf="item.header">{{ item.header }}</h2>
-       <div style="display:  flex;  justify-content: space-between">
-      <h5 style="display: inline-block;">{{ item.time | date:'EEE, MMM d, y | h:mm a ' }}</h5>
-      <mat-chip color="accent" selected class="chip">Accent fish</mat-chip> 
+      <h2 *ngIf="item.header" [innerHTML]="item.header"></h2>
+      <div style="display: flex; justify-content: space-between">
+        <h5 style="display: inline-block">
+          {{ item.time | date : "EEE, MMM d, y | h:mm a " }}
+        </h5>
+        <span>
+          <mat-chip
+            *ngFor="let tag of item.tags"
+            [color]="colObj[tag.toString()]"
+            style="margin: 0 0.1rem; text-transform: capitalize"
+            selected
+            class="chip"
+            >{{ tag }}</mat-chip
+          >
+        </span>
       </div>
-       
-      <pre class="content-txt">
-         {{ item.txt }} 
+
+      <pre class="content-txt" [innerHTML]="item.txt">
+         <!-- {{ item.txt }}  -->
       </pre>
       <div *ngIf="isLogged" style="margin-bottom: 0.3rem">
         <button
@@ -155,7 +184,7 @@
           class="border"
           (click)="deleteTxt(item.id)"
         >
-        <mat-icon> delete </mat-icon> Delete
+          <mat-icon> delete </mat-icon> Delete
         </button>
       </div>
 

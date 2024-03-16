@@ -12,7 +12,7 @@ export class HttpserviceService {
    }
 
 
-   addTextData(data : {[txt : string] : string}){
+   addTextData(data : {[txt : string] : string | string[]}){
      return this.http.post(baseUrl+'txt.json',data);
 
    }
@@ -33,9 +33,10 @@ export class HttpserviceService {
     return this.http.delete(baseUrl+'images/'+ id + '.json');
    }
    updateData(data : any,id : string){
-    id = data[0];
+    
     console.log(data)
-    return this.http.patch(baseUrl+'txt/'+ id + '.json',{...data[1],txt : data.txt});
+  
+    return this.http.patch(baseUrl+'txt/'+ id + '.json',{...data});
      
    }
 

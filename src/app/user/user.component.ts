@@ -99,7 +99,7 @@ export class DialogBoxer implements AfterViewInit  {
       this.toastr.success('Rohit','Welcome')
       this.auth.setUser();
     }else{
-      this.toastr.warning( "You aren't Rohit !! " ,'Oops !! ')
+      this.toastr.warning( "You aren't Rohit !! " ,'OOPS !! ')
     }
     this.dialogRef.close();
   }

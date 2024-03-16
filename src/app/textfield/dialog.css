@@ -67,3 +67,20 @@ aside{
     margin-top: 1rem ;
     width: 98%;
   }
+
+  ::placeholder {
+    color: rgb(255, 255, 255,0.8);;
+    /* opacity: 1; Firefox */
+  }
+  
+  ::-ms-input-placeholder { /* Edge 12-18 */
+    color: rgb(255, 255, 255,0.8);;
+  }
+
+  .chipclass{
+    width: 100%
+  }
+
+  input{
+    font-size: 1.2rem;
+  }
